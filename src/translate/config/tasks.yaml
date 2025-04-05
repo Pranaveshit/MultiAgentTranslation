@@ -1,0 +1,20 @@
+text_reader_task:
+  description: >
+    Read the text file and return the text and send to the translator agent
+  expected_output: >
+    The text from the text file
+  agent: text_reader
+
+translator_task:
+  description: >
+    Translate the text from the text file to the target language and send to the text writer agent
+  expected_output: >
+    The translated text
+  agent: translator
+
+text_writer_task:
+  description: >
+    Write the translated text to a new text file
+  expected_output: >
+    The translated text in a text file
+  agent: text_writer
