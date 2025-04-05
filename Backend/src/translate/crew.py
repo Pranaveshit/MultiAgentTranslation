@@ -3,10 +3,16 @@ from crewai.project import CrewBase, agent, crew, task
 from crewai_tools import (
     DirectoryReadTool,
     FileReadTool,
+    PDFSearchTool
 )
+from .tools.pdf_reader import PDFReader
+from .tools.pdf_writer import PDFWriter
 
-docs_tool = DirectoryReadTool(directory='../translate')
 file_tool = FileReadTool()
+pdf_tool = PDFSearchTool()
+pdf_reader_tool = PDFReader()
+pdf_writer_tool = PDFWriter()
+
 
 # If you want to run a snippet of code before or after the crew starts,
 # you can use the @before_kickoff and @after_kickoff decorators
@@ -25,10 +31,10 @@ class Translate():
     # If you would like to add tools to your agents, you can learn more about it here:
     # https://docs.crewai.com/concepts/agents#agent-tools
     @agent
-    def text_reader(self) -> Agent:
+    def pdf_reader(self) -> Agent:
         return Agent(
-            config=self.agents_config['text_reader'],
-            tools=[file_tool],
+            config=self.agents_config['pdf_reader'],
+            tools=[pdf_reader_tool],
             verbose=True
         )
 
@@ -41,10 +47,10 @@ class Translate():
         )
     
     @agent
-    def text_writer(self) -> Agent:
+    def pdf_writer(self) -> Agent:
         return Agent(
-            config=self.agents_config['text_writer'],
-            tools=[file_tool],
+            config=self.agents_config['pdf_writer'],
+            tools=[pdf_writer_tool],
             verbose=True
         )
 
@@ -52,9 +58,9 @@ class Translate():
     # task dependencies, and task callbacks, check out the documentation:
     # https://docs.crewai.com/concepts/tasks#overview-of-a-task
     @task
-    def text_reader_task(self) -> Task:
+    def pdf_reader_task(self) -> Task:
         return Task(
-            config=self.tasks_config['text_reader_task'],
+            config=self.tasks_config['pdf_reader_task'],
         )
 
     @task
@@ -64,9 +70,9 @@ class Translate():
         )
         
     @task
-    def text_writer_task(self) -> Task:
+    def pdf_writer_task(self) -> Task:
         return Task(
-            config=self.tasks_config['text_writer_task'],
+            config=self.tasks_config['pdf_writer_task'],
             output_file='translated.txt'
         )
 

@@ -18,9 +18,9 @@ def run():
     Run the crew.
     """
     inputs = {
-            'filePath': "C:/Users/gafer/Downloads/japanese_sections.txt",
+            'filePath': "C:/Users/gafer/Downloads/babel-japanese-sample.pdf",
             'outputPath': "C:/Coding/CrewAI/Translate/output/translated.txt",
-            'sourceLang': 'ja',
+            'sourceLang': 'es',
             'targetLang': 'en',
             'instructions': "Translate the text content at {filePath} that is in source language {sourceLang} to the target language {targetLang} using the tools provided while following all instructions provided by the user in {instructions}"
         }

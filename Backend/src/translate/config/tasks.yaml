@@ -1,20 +1,20 @@
-text_reader_task:
+pdf_reader_task:
   description: >
-    Read the text file and return the text and send to the translator agent
+    Read the pdf file and return the pdf and send to the translator agent
   expected_output: >
-    The text from the text file
-  agent: text_reader
+    The pdf from the pdf file
+  agent: pdf_reader
 
 translator_task:
   description: >
-    Translate the text from the text file to the target language and send to the text writer agent
+    Translate the pdf from the pdf file to the target language and send to the pdf writer agent
   expected_output: >
-    The translated text
+    The translated pdf
   agent: translator
 
-text_writer_task:
+pdf_writer_task:
   description: >
-    Write the translated text to a new text file
+    Write the translated pdf to a new pdf file
   expected_output: >
-    The translated text in a text file
-  agent: text_writer
+    The translated pdf only in a pdf file
+  agent: pdf_writer

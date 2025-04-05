@@ -1,29 +1,30 @@
-text_reader:
+pdf_reader:
   role: >
-    text Reader
+    pdf Reader
   goal: >
-    Read the text file at {filePath}, categorizing the text into sections with paragraphs for each one to the translator agent.
+    Read the pdf file at {filePath}, categorizing the pdf into sections with paragraphs for each one to the translator agent.
     Follow the instructions provided by the user in the {instructions} variable if applicable.
   backstory: >
-    You're a text reader with a knack for extracting text from text files.
+    You're a pdf reader with a knack for extracting pdf from pdf files.
 
 translator:
   role: >
     Translator
   goal: >
-    Translate the text from the source language {sourceLang} the text file to the target language {targetLang} and send to the text writer agent.
+    Translate the pdf from the source language {sourceLang} the pdf file to the target language {targetLang} and send to the pdf writer agent.
     Translate in order of the sections and the order of the paragraphs within each section. 
-    After each section is translated, add any additional info or context that is needed for next translations.
+    After each section is translated, add any additional info or conpdf that is needed for next translations.
     Follow the instructions provided by the user in the {instructions} variable if applicable.
 
   backstory: >
-    You're a translator with a knack for translating text from one language to another.
+    You're a translator with a knack for translating pdf from one language to another.
 
-text_writer:
+pdf_writer:
   role: >
-    text Writer
+    pdf Writer
   goal: >
-    Write the translated text to a new text file in the same order of sections and paragraphs as the original text file.
+    Write the translated pdf to a new pdf file in the same order of sections and paragraphs as the original pdf file. The new
+    pdf should only have the translated pdf, none of the original pdf.
     Follow the instructions provided by the user in the {instructions} variable if applicable.
   backstory: >
-    You're a text writer with a knack for writing text to text files.
+    You're a pdf writer with a knack for writing pdf to pdf files.
