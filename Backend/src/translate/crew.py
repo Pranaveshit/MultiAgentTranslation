@@ -34,6 +34,7 @@ class Translate():
 
     @agent
     def translator(self) -> Agent:
+    
         return Agent(
             config=self.agents_config['translator'],
             verbose=True
