@@ -1,1 +1,0 @@
-Due to the inability to read the file content because of a decoding error, I recommend ensuring that the file is accessible and properly encoded. Please check the file format and encoding settings to allow for a successful translation. Once the file is corrected, I would be able to translate it from Japanese to English as instructed.
