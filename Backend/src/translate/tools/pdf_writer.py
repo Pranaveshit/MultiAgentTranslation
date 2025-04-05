@@ -1,78 +1,107 @@
 from crewai.tools import BaseTool
 from typing import Type
 from pydantic import BaseModel, Field
-from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.units import inch
 from reportlab.pdfbase import pdfmetrics
-from reportlab.pdfbase.ttfonts import TTFont
-import json
+from reportlab.pdfbase.cidfonts import UnicodeCIDFont
 import os
 
 class PDFWriterInput(BaseModel):
     """Input schema for PDFWriter."""
-    original_layout: str = Field(..., description="The layout information from PDFReader (as string)")
-    translated_text: dict = Field(..., description="Dictionary mapping original text to translated text")
+    translated_text: dict = Field(..., description="Dictionary containing the translated text")
     output_path: str = Field(..., description="Path where to save the translated PDF")
-    font_path: str = Field(default=None, description="Path to a TTF font file for CJK support")
 
 class PDFWriter(BaseTool):
     name: str = "PDF Writer"
-    description: str = "A tool for recreating PDFs with translated text while maintaining the original layout."
+    description: str = "A tool for creating readable PDFs from translated text."
     args_schema: Type[BaseModel] = PDFWriterInput
 
-    def _run(self, original_layout: str, translated_text: dict, output_path: str, font_path: str = None) -> str:
+    def _run(self, translated_text: dict, output_path: str) -> str:
         try:
-            # Parse the layout information
-            layout_info = eval(original_layout)  # Convert string representation back to dict
-            
-            # Create the output directory if it doesn't exist
+            # Ensure output directory exists
             os.makedirs(os.path.dirname(output_path), exist_ok=True)
+
+            # Create the PDF document
+            doc = SimpleDocTemplate(
+                output_path,
+                pagesize=A4,
+                rightMargin=inch,
+                leftMargin=inch,
+                topMargin=inch,
+                bottomMargin=inch
+            )
+
+            # Try to register CJK fonts for better character support
+            try:
+                for font in ['HeiseiMin-W3', 'HeiseiKakuGo-W5', 'HYSMyeongJo-Medium']:
+                    try:
+                        pdfmetrics.registerFont(UnicodeCIDFont(font))
+                        break
+                    except:
+                        continue
+            except:
+                pass  # Use default font if CJK fonts aren't available
+
+            # Create styles
+            styles = getSampleStyleSheet()
             
-            # Initialize the PDF canvas
-            c = canvas.Canvas(output_path)
+            # Custom style for title
+            title_style = ParagraphStyle(
+                'CustomTitle',
+                parent=styles['Heading1'],
+                fontSize=24,
+                spaceAfter=30,
+                alignment=1  # Center alignment
+            )
             
-            # Register CJK font if provided
-            if font_path and os.path.exists(font_path):
-                font_name = os.path.splitext(os.path.basename(font_path))[0]
-                pdfmetrics.registerFont(TTFont(font_name, font_path))
-            else:
-                # Default to built-in fonts
-                font_name = 'Helvetica'
+            # Custom style for headers
+            header_style = ParagraphStyle(
+                'CustomHeader',
+                parent=styles['Heading2'],
+                fontSize=14,
+                spaceBefore=20,
+                spaceAfter=10
+            )
             
-            for page in layout_info['pages']:
-                # Set page size based on original dimensions
-                c.setPageSize((page['width'], page['height']))
-                
-                # Process each word while maintaining position
-                for word in page['words']:
-                    original_text = word['text']
-                    translated = translated_text.get(original_text, original_text)
+            # Custom style for normal text
+            text_style = ParagraphStyle(
+                'CustomText',
+                parent=styles['Normal'],
+                fontSize=11,
+                leading=14,  # Line spacing
+                spaceAfter=8
+            )
+
+            # Build the document content
+            story = []
+
+            # Add title if it exists
+            if 'title' in translated_text:
+                story.append(Paragraph(translated_text['title'], title_style))
+                story.append(Spacer(1, 20))
+
+            # Process the translated text
+            for key, text in translated_text.items():
+                if key == 'title':  # Skip title as it's already added
+                    continue
                     
-                    # Get position information
-                    pos = word['position']
-                    x = pos['x0']
-                    y = page['height'] - pos['y1']  # Convert from PDF coordinates
-                    
-                    # Calculate font size based on the original text box
-                    width = pos['x1'] - pos['x0']
-                    height = pos['y1'] - pos['y0']
-                    font_size = height * 0.9  # Slightly smaller to ensure fit
-                    
-                    # Set font and size
-                    c.setFont(font_name, font_size)
-                    
-                    # Draw the translated text
-                    c.drawString(x, y, translated)
-                
-                # Process tables if any
-                for table in page['tables']:
-                    # Table processing would go here
-                    # This is a placeholder for table reconstruction
-                    pass
-                
-                c.showPage()
-            
-            c.save()
+                if isinstance(text, str):
+                    # Determine if this is likely a header (shorter text, ends with newline)
+                    if len(text.strip()) < 100 and text.strip().endswith('\n'):
+                        story.append(Paragraph(text.strip(), header_style))
+                    else:
+                        # Split text into paragraphs
+                        paragraphs = text.split('\n\n')
+                        for para in paragraphs:
+                            if para.strip():
+                                story.append(Paragraph(para.strip(), text_style))
+                                story.append(Spacer(1, 8))
+
+            # Build the PDF
+            doc.build(story)
             return f"Successfully created translated PDF at {output_path}"
 
         except Exception as e:

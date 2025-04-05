@@ -14,7 +14,7 @@ translator_task:
 
 pdf_writer_task:
   description: >
-    Write the translated pdf to a new pdf file
+    Write the translated pdf to a new pdf file that is at the output path {outputPath}
   expected_output: >
     The translated pdf only in a pdf file
   agent: pdf_writer

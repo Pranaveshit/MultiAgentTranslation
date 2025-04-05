@@ -73,7 +73,6 @@ class Translate():
     def pdf_writer_task(self) -> Task:
         return Task(
             config=self.tasks_config['pdf_writer_task'],
-            output_file='translated.txt'
         )
 
     @crew

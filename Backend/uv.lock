@@ -4010,6 +4010,19 @@ wheels = [
 ]
 
 [[package]]
+name = "reportlab"
+version = "4.3.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "chardet" },
+    { name = "pillow" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/a7/5c/9b23c8a9a69f2bc1f1268ed545f393a60b59cbe5f9d861a28b676f809729/reportlab-4.3.1.tar.gz", hash = "sha256:230f78b21667194d8490ac9d12958d5c14686352db7fbe03b95140fafdf5aa97", size = 3499248 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ce/6b/42805895ed08a314a01be6110584b5d059328386988ddbc4f8f10014d30e/reportlab-4.3.1-py3-none-any.whl", hash = "sha256:0f37dd16652db3ef84363cf744632a28c38bd480d5bf94683466852d7bb678dd", size = 1949468 },
+]
+
+[[package]]
 name = "requests"
 version = "2.32.3"
 source = { registry = "https://pypi.org/simple" }
@@ -4610,8 +4623,10 @@ dependencies = [
     { name = "pdf2image" },
     { name = "pdfminer-six" },
     { name = "pdfplumber" },
+    { name = "pillow" },
     { name = "pymupdf" },
     { name = "pytesseract" },
+    { name = "reportlab" },
     { name = "unstructured", extra = ["all-docs"] },
 ]
 
@@ -4621,8 +4636,10 @@ requires-dist = [
     { name = "pdf2image", specifier = ">=1.17.0" },
     { name = "pdfminer-six", specifier = ">=20221105" },
     { name = "pdfplumber", specifier = ">=0.10.3" },
+    { name = "pillow", specifier = ">=10.2.0" },
     { name = "pymupdf", specifier = ">=1.23.0" },
     { name = "pytesseract", specifier = ">=0.3.10" },
+    { name = "reportlab", specifier = ">=4.1.0" },
     { name = "unstructured", extras = ["all-docs"], specifier = ">=0.12.0" },
 ]
 

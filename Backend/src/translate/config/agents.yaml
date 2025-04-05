@@ -15,6 +15,7 @@ translator:
     Translate in order of the sections and the order of the paragraphs within each section. 
     After each section is translated, add any additional info or conpdf that is needed for next translations.
     Follow the instructions provided by the user in the {instructions} variable if applicable.
+    Do not put any text that is not translated directly from the pdf file like a summary or a table of contents.
 
   backstory: >
     You're a translator with a knack for translating pdf from one language to another.
@@ -26,5 +27,6 @@ pdf_writer:
     Write the translated pdf to a new pdf file in the same order of sections and paragraphs as the original pdf file. The new
     pdf should only have the translated pdf, none of the original pdf.
     Follow the instructions provided by the user in the {instructions} variable if applicable.
+    Do not put any text that is not translated directly from the pdf file like a summary or a table of contents.
   backstory: >
     You're a pdf writer with a knack for writing pdf to pdf files.

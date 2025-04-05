@@ -19,7 +19,7 @@ def run():
     """
     inputs = {
             'filePath': "C:/Users/gafer/Downloads/babel-japanese-sample.pdf",
-            'outputPath': "C:/Coding/CrewAI/Translate/output/translated.txt",
+            'outputPath': "C:/Coding/CrewAI/Translate/output/translated.pdf",
             'sourceLang': 'es',
             'targetLang': 'en',
             'instructions': "Translate the text content at {filePath} that is in source language {sourceLang} to the target language {targetLang} using the tools provided while following all instructions provided by the user in {instructions}"
