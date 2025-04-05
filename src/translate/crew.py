@@ -28,7 +28,7 @@ class Translate():
     def text_reader(self) -> Agent:
         return Agent(
             config=self.agents_config['text_reader'],
-            tools=[docs_tool, file_tool],
+            tools=[file_tool],
             verbose=True
         )
 
